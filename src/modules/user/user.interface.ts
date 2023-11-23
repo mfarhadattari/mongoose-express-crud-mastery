@@ -23,5 +23,5 @@ export interface IUser {
   isActive: boolean;
   hobbies: string[];
   address: IAddress;
-  orders: IOrder[];
+  orders?: IOrder[];
 }
