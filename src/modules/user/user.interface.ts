@@ -32,5 +32,7 @@ export interface IUser {
 
 export interface IUserModel extends Model<IUser> {
   // eslint-disable-next-line no-unused-vars
-  isUserExist(userId: number): boolean;
+  isUserExist(userId: number): Promise<boolean>;
+  // eslint-disable-next-line no-unused-vars
+  addOrder(userId: number, Order: IOrder): Promise<void>;
 }

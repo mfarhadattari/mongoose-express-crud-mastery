@@ -1,4 +1,4 @@
-import { IUser } from './user.interface';
+import { IOrder, IUser } from './user.interface';
 import { UserModel } from './user.model';
 
 // ------------------------>> Create User Service <<------------------------- //
@@ -8,8 +8,8 @@ const createUserIntoDB = async (userData: IUser): Promise<IUser> => {
 };
 
 // ------------------------>> GET All Users Service <<----------------------- //
-const getAllUsersFromDB = async () => {
-  const result = await await UserModel.find().select({
+const getAllUsersFromDB = async (): Promise<IUser[] | []> => {
+  const result = await UserModel.find().select({
     _id: 0,
     username: 1,
     fullName: 1,
@@ -21,7 +21,7 @@ const getAllUsersFromDB = async () => {
 };
 
 // -------------------------->> Get User by userId <<-------------------- //
-const getUserByUserIdFromDB = async (userId: number) => {
+const getUserByUserIdFromDB = async (userId: number): Promise<IUser | null> => {
   const result = await UserModel.findOne({ userId: userId });
   return result;
 };
@@ -40,8 +40,13 @@ const updateUserByIntoDB = async (
 };
 
 // ------------------------>> Delete User Service <<------------------------- //
-const deleteUserFromDB = async (userId: number) => {
+const deleteUserFromDB = async (userId: number): Promise<void> => {
   await UserModel.findOneAndDelete({ userId });
+};
+
+// ------------------------->> Add Order Service <<------------------------ //
+const addOrderIntoDB = async (userId: number, order: IOrder): Promise<void> => {
+  await UserModel.addOrder(userId, order);
 };
 
 export const UserService = {
@@ -50,4 +55,5 @@ export const UserService = {
   getUserByUserIdFromDB,
   updateUserByIntoDB,
   deleteUserFromDB,
+  addOrderIntoDB,
 };

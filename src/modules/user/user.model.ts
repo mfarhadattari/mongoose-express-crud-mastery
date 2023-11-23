@@ -105,6 +105,7 @@ const userSchema = new Schema<IUser, IUserModel>(
 
 // ------------------->> save hashing passwords into database <<--------------------
 userSchema.pre('save', function (next) {
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
   const user = this;
   bcrypt.hash(user.password, 10, function (err, hashPassword) {
     if (err) {
@@ -115,10 +116,22 @@ userSchema.pre('save', function (next) {
   });
 });
 
-// --------------------->> User Statics <<------------------------
+// --------------------->> Is User Exist Static <<------------------------
 userSchema.statics.isUserExist = async function (userId) {
   const result = await UserModel.findOne({ userId: userId });
   return result === null ? false : true;
+};
+
+// ---------------------->> Add Order Static <<--------------------------
+userSchema.statics.addOrder = async function (userId, order) {
+  const user = await UserModel.findOne({ userId: userId });
+  if (user) {
+    if (!user.orders) {
+      user.orders = [];
+    }
+    user.orders.push(order);
+    await user.save();
+  }
 };
 
 export const UserModel = model<IUser, IUserModel>('User', userSchema);
