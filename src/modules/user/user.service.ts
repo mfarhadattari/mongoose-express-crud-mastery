@@ -7,6 +7,13 @@ const createUserIntoDB = async (userData: IUser): Promise<IUser> => {
   return result;
 };
 
+// ------------------------>> GET All Users Service <<----------------------- //
+const getAllUsersFromDB = async (): Promise<IUser[] | null> => {
+  const result = await UserModel.find();
+  return result;
+};
+
 export const UserService = {
   createUserIntoDB,
+  getAllUsersFromDB,
 };

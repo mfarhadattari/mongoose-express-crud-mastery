@@ -41,6 +41,25 @@ const createUser = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+// ------------------------>> Create User Controller <<------------------------- //
+const getAllUsers = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const result = await UserService.getAllUsersFromDB();
+    res.status(200).json({
+      success: true,
+      message: 'Users fetched successfully',
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Something went wrong',
+      error: error,
+    });
+  }
+};
+
 export const UserController = {
   createUser,
+  getAllUsers,
 };
