@@ -41,7 +41,7 @@ const createUser = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-// ------------------------>> Create User Controller <<------------------------- //
+// ------------------------>> Ger All Users Controller <<------------------------- //
 const getAllUsers = async (req: Request, res: Response): Promise<void> => {
   try {
     const result = await UserService.getAllUsersFromDB();
@@ -59,7 +59,27 @@ const getAllUsers = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+// ------------------------>> Get a user Controller <<------------------------- //
+const getUserById = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = parseInt(req.params.userId);
+    const result = await UserService.getUserByUserIdFromDB(userId);
+    res.status(200).json({
+      success: true,
+      message: 'User fetched successfully',
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Something went wrong',
+      error: error,
+    });
+  }
+};
+
 export const UserController = {
   createUser,
   getAllUsers,
+  getUserById,
 };
