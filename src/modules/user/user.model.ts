@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 import { Schema, model } from 'mongoose';
 import { IAddress, IName, IOrder, IUser } from './user.interface';
 
@@ -90,6 +91,18 @@ const userSchema = new Schema<IUser>({
     type: [orderSchema],
     default: [],
   },
+});
+
+// ------------------->> save hashing passwords into database <<--------------------
+userSchema.pre('save', function (next) {
+  const user = this;
+  bcrypt.hash(user.password, 10, function (err, hashPassword) {
+    if (err) {
+      throw new Error(err.message);
+    }
+    user.password = hashPassword;
+    next();
+  });
 });
 
 export const UserModel = model('User', userSchema);
