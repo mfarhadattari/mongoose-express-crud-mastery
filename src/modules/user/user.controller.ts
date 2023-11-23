@@ -124,9 +124,39 @@ const updateUser = async (req: Request, res: Response): Promise<void> => {
   });
 };
 
+// ------------------------>> Delete User Controller <<------------------------- //
+const deleteUser = async (req: Request, res: Response): Promise<void> => {
+  const userId = parseInt(req.params.userId);
+
+  // check use exist or not
+  const userExist = await UserModel.isUserExist(userId);
+
+  // if user exists
+  if (userExist) {
+    await UserService.deleteUserFromDB(userId);
+    res.status(200).json({
+      success: true,
+      message: 'User deleted successfully!',
+      data: null,
+    });
+    return;
+  }
+
+  // if not user exist
+  res.status(404).json({
+    success: false,
+    message: 'User not found',
+    error: {
+      code: 404,
+      description: 'User not found!',
+    },
+  });
+};
+
 export const UserController = {
   createUser,
   getAllUsers,
   getUserById,
   updateUser,
+  deleteUser,
 };
