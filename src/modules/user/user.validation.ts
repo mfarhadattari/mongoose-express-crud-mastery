@@ -50,7 +50,7 @@ export const userValidationSchema = z.object({
     invalid_type_error: 'User Id must be a number',
     required_error: 'User Id is required',
   }),
-  userName: z.string({
+  username: z.string({
     invalid_type_error: 'User Name must be a string',
     required_error: 'User Name is required',
   }),

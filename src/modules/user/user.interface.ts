@@ -17,7 +17,7 @@ export interface IOrder {
 
 export interface IUser {
   userId: number;
-  userName: string;
+  username: string;
   password: string;
   fullName: IName;
   age: number;
