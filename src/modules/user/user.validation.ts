@@ -1,6 +1,6 @@
 import z from 'zod';
 
-export const nameValidationSchema = {
+export const nameValidationSchema = z.object({
   firstName: z
     .string({
       required_error: 'First name is required',
@@ -13,9 +13,9 @@ export const nameValidationSchema = {
       required_error: 'Last name is required',
     })
     .max(20, 'Last name must be less than 20 characters'),
-};
+});
 
-export const addressValidationScheme = {
+export const addressValidationScheme = z.object({
   street: z.string({
     required_error: 'Street is required',
     invalid_type_error: 'Street must be a string',
@@ -28,9 +28,9 @@ export const addressValidationScheme = {
     required_error: 'Country is required',
     invalid_type_error: 'Country must be a string',
   }),
-};
+});
 
-export const orderValidationScheme = {
+export const orderValidationScheme = z.object({
   productName: z.string({
     required_error: 'Product name is required',
     invalid_type_error: 'Product name must be a string',
@@ -43,9 +43,9 @@ export const orderValidationScheme = {
     required_error: 'Quantity is required',
     invalid_type_error: 'Quantity must be a number',
   }),
-};
+});
 
-export const userValidationSchema = {
+export const userValidationSchema = z.object({
   userId: z.number({
     invalid_type_error: 'User Id must be a number',
     required_error: 'User Id is required',
@@ -60,7 +60,7 @@ export const userValidationSchema = {
       required_error: 'Password is required',
     })
     .min(8, 'Password must be minimum 8 characters'),
-  fullName: z.object(nameValidationSchema),
+  fullName: nameValidationSchema,
   age: z.number({
     invalid_type_error: 'Age must be a number',
     required_error: 'Age is required',
@@ -83,6 +83,6 @@ export const userValidationSchema = {
       required_error: 'Hobbies is required',
     }),
   ),
-  address: z.object(addressValidationScheme),
-  orders: z.array(z.object(orderValidationScheme)).optional(),
-};
+  address: addressValidationScheme,
+  orders: z.array(orderValidationScheme).optional(),
+});

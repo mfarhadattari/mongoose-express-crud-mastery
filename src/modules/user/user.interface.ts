@@ -1,3 +1,8 @@
+export interface IName {
+  firstName: string;
+  lastName: string;
+}
+
 export interface IAddress {
   street: string;
   city: string;
@@ -14,10 +19,7 @@ export interface IUser {
   userId: number;
   userName: string;
   password: string;
-  fullName: {
-    firstName: string;
-    lastName: string;
-  };
+  fullName: IName;
   age: number;
   email: string;
   isActive: boolean;
