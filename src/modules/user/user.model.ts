@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { Schema, model } from 'mongoose';
-import { IAddress, IName, IOrder, IUser } from './user.interface';
+import { IAddress, IName, IOrder, IUser, IUserModel } from './user.interface';
 
 // ------------------->> Creating Name Schema <<------------------- //
 const nameSchema = new Schema<IName>({
@@ -47,7 +47,7 @@ const orderSchema = new Schema<IOrder>({
 });
 
 // ------------------->> Creating User Schema <<------------------- //
-const userSchema = new Schema<IUser>(
+const userSchema = new Schema<IUser, IUserModel>(
   {
     userId: {
       type: Number,
@@ -115,4 +115,10 @@ userSchema.pre('save', function (next) {
   });
 });
 
-export const UserModel = model('User', userSchema);
+// --------------------->> User Statics <<------------------------
+userSchema.statics.isUserExist = async function (userId) {
+  const result = await UserModel.findOne({ userId: userId });
+  return result === null ? false : true;
+};
+
+export const UserModel = model<IUser, IUserModel>('User', userSchema);

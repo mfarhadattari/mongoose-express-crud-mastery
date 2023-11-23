@@ -2,6 +2,7 @@
 import { Request, Response } from 'express';
 import { SafeParseReturnType } from 'zod';
 import { IUser } from './user.interface';
+import { UserModel } from './user.model';
 import { UserService } from './user.service';
 import { userValidationSchema } from './user.validation';
 
@@ -63,11 +64,25 @@ const getAllUsers = async (req: Request, res: Response): Promise<void> => {
 const getUserById = async (req: Request, res: Response): Promise<void> => {
   try {
     const userId = parseInt(req.params.userId);
-    const result = await UserService.getUserByUserIdFromDB(userId);
-    res.status(200).json({
-      success: true,
-      message: 'User fetched successfully',
-      data: result,
+    const userExist = await UserModel.isUserExist(userId);
+
+    if (userExist) {
+      const result = await UserService.getUserByUserIdFromDB(userId);
+      res.status(200).json({
+        success: true,
+        message: 'User fetched successfully',
+        data: result,
+      });
+      return;
+    }
+
+    res.status(404).json({
+      success: false,
+      message: 'User not found',
+      error: {
+        code: 404,
+        description: 'User not found!',
+      },
     });
   } catch (error: any) {
     res.status(500).json({
