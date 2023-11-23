@@ -47,51 +47,61 @@ const orderSchema = new Schema<IOrder>({
 });
 
 // ------------------->> Creating User Schema <<------------------- //
-const userSchema = new Schema<IUser>({
-  userId: {
-    type: Number,
-    required: true,
-    unique: true,
+const userSchema = new Schema<IUser>(
+  {
+    userId: {
+      type: Number,
+      required: true,
+      unique: true,
+    },
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    fullName: {
+      type: nameSchema,
+      required: true,
+    },
+    age: {
+      type: Number,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    isActive: {
+      type: Boolean,
+      required: true,
+    },
+    hobbies: {
+      type: [String],
+      required: true,
+    },
+    address: {
+      type: addressSchema,
+      required: true,
+    },
+    orders: {
+      type: [orderSchema],
+      default: [],
+    },
   },
-  username: {
-    type: String,
-    required: true,
-    unique: true,
+  {
+    toJSON: {
+      transform: function (doc, transformedDoc) {
+        delete transformedDoc.password;
+        return transformedDoc;
+      },
+    },
   },
-  password: {
-    type: String,
-    required: true,
-  },
-  fullName: {
-    type: nameSchema,
-    required: true,
-  },
-  age: {
-    type: Number,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  isActive: {
-    type: Boolean,
-    required: true,
-  },
-  hobbies: {
-    type: [String],
-    required: true,
-  },
-  address: {
-    type: addressSchema,
-    required: true,
-  },
-  orders: {
-    type: [orderSchema],
-    default: [],
-  },
-});
+);
 
 // ------------------->> save hashing passwords into database <<--------------------
 userSchema.pre('save', function (next) {
