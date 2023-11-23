@@ -223,6 +223,42 @@ const addOrder = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+// ------------------------>> Add Order Controller <<------------------------ //
+const getUserOrders = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = parseInt(req.params.userId);
+    // check user exist or not
+    const userExist = await UserModel.isUserExist(userId);
+
+    // if user not exist
+    if (!userExist) {
+      res.status(404).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+      return;
+    }
+
+    // if user exist
+    const result = await UserService.getUserOrders(userId);
+    res.status(200).json({
+      success: true,
+      message: 'Orders fetched successfully',
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Something went wrong',
+      error: error,
+    });
+  }
+};
+
 export const UserController = {
   createUser,
   getAllUsers,
@@ -230,4 +266,5 @@ export const UserController = {
   updateUser,
   deleteUser,
   addOrder,
+  getUserOrders,
 };

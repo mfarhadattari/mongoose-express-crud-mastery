@@ -22,4 +22,7 @@ router.delete('/:userId', UserController.deleteUser);
 // ----------->> Add Order Route <<------------ //
 router.put('/:userId/orders', UserController.addOrder);
 
+// ----------->> Add Order Route <<------------ //
+router.get('/:userId/orders', UserController.getUserOrders);
+
 export const userRoute = router;

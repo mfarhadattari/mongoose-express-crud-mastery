@@ -49,6 +49,14 @@ const addOrderIntoDB = async (userId: number, order: IOrder): Promise<void> => {
   await UserModel.addOrder(userId, order);
 };
 
+// ------------------------->> Get All Order Of User <<----------------- //
+const getUserOrders = async (userId: number) => {
+  const result = await UserModel.findOne({ userId: userId }).select({
+    orders: 1,
+  });
+  return result;
+};
+
 export const UserService = {
   createUserIntoDB,
   getAllUsersFromDB,
@@ -56,4 +64,5 @@ export const UserService = {
   updateUserByIntoDB,
   deleteUserFromDB,
   addOrderIntoDB,
+  getUserOrders,
 };
