@@ -13,4 +13,7 @@ router.get('/', UserController.getAllUsers);
 // ---------->> Ger A users router <<------------ //
 router.get('/:userId', UserController.getUserById);
 
+// ---------->> Update users router <<------------ //
+router.put('/:userId', UserController.updateUser);
+
 export const userRoute = router;

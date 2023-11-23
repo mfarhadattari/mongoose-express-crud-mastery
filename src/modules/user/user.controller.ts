@@ -93,8 +93,40 @@ const getUserById = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+// ------------------------>> Update User Controller <<------------------------- //
+const updateUser = async (req: Request, res: Response): Promise<void> => {
+  const userId = parseInt(req.params.userId);
+
+  // check use exist or not
+  const userExist = await UserModel.isUserExist(userId);
+
+  // if user exists
+  if (userExist) {
+    const userData = req.body;
+    // update user data
+    const result = await UserService.updateUserByIntoDB(userId, userData);
+    res.status(200).json({
+      success: true,
+      message: 'User updated successfully!',
+      data: result,
+    });
+    return;
+  }
+
+  // if not user exist
+  res.status(404).json({
+    success: false,
+    message: 'User not found',
+    error: {
+      code: 404,
+      description: 'User not found!',
+    },
+  });
+};
+
 export const UserController = {
   createUser,
   getAllUsers,
   getUserById,
+  updateUser,
 };

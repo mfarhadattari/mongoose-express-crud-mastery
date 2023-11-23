@@ -26,8 +26,22 @@ const getUserByUserIdFromDB = async (userId: number) => {
   return result;
 };
 
+// --------------------------->> Update User Service <<-------------------------- //
+const updateUserByIntoDB = async (
+  userId: number,
+  userData: IUser,
+): Promise<IUser | null> => {
+  const result = await UserModel.findOneAndUpdate(
+    { userId: userId },
+    userData,
+    { new: true },
+  );
+  return result;
+};
+
 export const UserService = {
   createUserIntoDB,
   getAllUsersFromDB,
   getUserByUserIdFromDB,
+  updateUserByIntoDB,
 };
