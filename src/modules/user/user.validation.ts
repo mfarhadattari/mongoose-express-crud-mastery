@@ -35,25 +35,34 @@ export const orderValidationScheme = z.object({
     required_error: 'Product name is required',
     invalid_type_error: 'Product name must be a string',
   }),
-  price: z.number({
-    required_error: 'Price is required',
-    invalid_type_error: 'Price must be a number',
-  }),
-  quantity: z.number({
-    required_error: 'Quantity is required',
-    invalid_type_error: 'Quantity must be a number',
-  }),
+  price: z
+    .number({
+      required_error: 'Price is required',
+      invalid_type_error: 'Price must be a number',
+    })
+    .positive('Price must be a positive number'),
+  quantity: z
+    .number({
+      required_error: 'Quantity is required',
+      invalid_type_error: 'Quantity must be a number',
+    })
+    .positive('Quantity must be a positive number'),
 });
 
 export const userValidationSchema = z.object({
-  userId: z.number({
-    invalid_type_error: 'User Id must be a number',
-    required_error: 'User Id is required',
-  }),
-  username: z.string({
-    invalid_type_error: 'User Name must be a string',
-    required_error: 'User Name is required',
-  }),
+  userId: z
+    .number({
+      invalid_type_error: 'User Id must be a number',
+      required_error: 'User Id is required',
+    })
+    .positive('User Id must be a positive number'),
+  username: z
+    .string({
+      invalid_type_error: 'User Name must be a string',
+      required_error: 'User Name is required',
+    })
+    .trim()
+    .toLowerCase(),
   password: z
     .string({
       invalid_type_error: 'Password must be a string',
@@ -61,10 +70,12 @@ export const userValidationSchema = z.object({
     })
     .min(8, 'Password must be minimum 8 characters'),
   fullName: nameValidationSchema,
-  age: z.number({
-    invalid_type_error: 'Age must be a number',
-    required_error: 'Age is required',
-  }),
+  age: z
+    .number({
+      invalid_type_error: 'Age must be a number',
+      required_error: 'Age is required',
+    })
+    .positive('Age must be a positive number'),
   email: z
     .string({
       invalid_type_error: 'Email must be a string',
@@ -74,7 +85,7 @@ export const userValidationSchema = z.object({
       message: 'Email must be a valid email',
     }),
   isActive: z.boolean({
-    invalid_type_error: 'Is Active must be a boolean',
+    invalid_type_error: 'Is Active must be a true or false',
     required_error: 'Is Active is required',
   }),
   hobbies: z.array(

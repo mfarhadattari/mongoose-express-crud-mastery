@@ -3,48 +3,63 @@ import { Schema, model } from 'mongoose';
 import { IAddress, IName, IOrder, IUser, IUserModel } from './user.interface';
 
 // ------------------->> Creating Name Schema <<------------------- //
-const nameSchema = new Schema<IName>({
-  firstName: {
-    type: String,
-    required: true,
+const nameSchema = new Schema<IName>(
+  {
+    firstName: {
+      type: String,
+      required: true,
+    },
+    lastName: {
+      type: String,
+      required: true,
+    },
   },
-  lastName: {
-    type: String,
-    required: true,
+  {
+    _id: false,
   },
-});
+);
 
 // ------------------->> Creating Address Schema <<------------------- //
-const addressSchema = new Schema<IAddress>({
-  street: {
-    type: String,
-    required: true,
+const addressSchema = new Schema<IAddress>(
+  {
+    street: {
+      type: String,
+      required: true,
+    },
+    city: {
+      type: String,
+      required: true,
+    },
+    country: {
+      type: String,
+      required: true,
+    },
   },
-  city: {
-    type: String,
-    required: true,
+  {
+    _id: false,
   },
-  country: {
-    type: String,
-    required: true,
-  },
-});
+);
 
 // ------------------->> Creating Order Schema <<------------------- //
-const orderSchema = new Schema<IOrder>({
-  productName: {
-    type: String,
-    required: true,
+const orderSchema = new Schema<IOrder>(
+  {
+    productName: {
+      type: String,
+      required: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+    quantity: {
+      type: Number,
+      required: true,
+    },
   },
-  price: {
-    type: Number,
-    required: true,
+  {
+    _id: false,
   },
-  quantity: {
-    type: Number,
-    required: true,
-  },
-});
+);
 
 // ------------------->> Creating User Schema <<------------------- //
 const userSchema = new Schema<IUser, IUserModel>(
@@ -158,7 +173,7 @@ userSchema.statics.calculateTotalPrice = async function (userId) {
       },
     },
   ]);
-  return result[0]?.totalPrice || 0;
+  return parseFloat(result[0]?.totalPrice.toFixed(2)) || 0;
 };
 
 export const UserModel = model<IUser, IUserModel>('User', userSchema);

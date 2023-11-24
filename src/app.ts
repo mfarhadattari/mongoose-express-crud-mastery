@@ -13,7 +13,18 @@ app.use(cors());
 app.use('/api/users', userRoute);
 
 app.get('/', (req: Request, res: Response) => {
-  res.status(200).send('MongooseExpress CRUD Mastery Server is running');
+  res.status(200).json({
+    success: true,
+    message: 'MongooseExpress CRUD Mastery Server is running',
+    data: {
+      author: {
+        name: 'Mohammad Farhad',
+        email: 'mfarhad.dev@gmail.com',
+        url: 'https:mfarhad-dev.vercel.app',
+        github: 'https://github.com/mfarhadattari',
+      },
+    },
+  });
 });
 
 export default app;

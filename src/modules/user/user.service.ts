@@ -13,8 +13,8 @@ const getAllUsersFromDB = async (): Promise<IUser[] | []> => {
     _id: 0,
     username: 1,
     fullName: 1,
-    email: 1,
     age: 1,
+    email: 1,
     address: 1,
   });
   return result;
@@ -22,7 +22,17 @@ const getAllUsersFromDB = async (): Promise<IUser[] | []> => {
 
 // -------------------------->> Get User by userId <<-------------------- //
 const getUserByUserIdFromDB = async (userId: number): Promise<IUser | null> => {
-  const result = await UserModel.findOne({ userId: userId });
+  const result = await UserModel.findOne({ userId: userId }).select({
+    _id: 0,
+    userId: 1,
+    username: 1,
+    fullName: 1,
+    age: 1,
+    email: 1,
+    isActive: 1,
+    hobbies: 1,
+    address: 1,
+  });
   return result;
 };
 
@@ -35,7 +45,17 @@ const updateUserByIntoDB = async (
     { userId: userId },
     userData,
     { new: true },
-  );
+  ).select({
+    _id: 0,
+    userId: 1,
+    username: 1,
+    fullName: 1,
+    age: 1,
+    email: 1,
+    isActive: 1,
+    hobbies: 1,
+    address: 1,
+  });
   return result;
 };
 
@@ -52,6 +72,7 @@ const addOrderIntoDB = async (userId: number, order: IOrder): Promise<void> => {
 // ---------------------->> Get All Order Of User Service <<----------------- //
 const getUserOrders = async (userId: number) => {
   const result = await UserModel.findOne({ userId: userId }).select({
+    _id: 0,
     orders: 1,
   });
   return result;
