@@ -49,12 +49,20 @@ const addOrderIntoDB = async (userId: number, order: IOrder): Promise<void> => {
   await UserModel.addOrder(userId, order);
 };
 
-// ------------------------->> Get All Order Of User <<----------------- //
+// ---------------------->> Get All Order Of User Service <<----------------- //
 const getUserOrders = async (userId: number) => {
   const result = await UserModel.findOne({ userId: userId }).select({
     orders: 1,
   });
   return result;
+};
+
+// ---------------->> User Orders Total Price Service <<---------------- //
+const getUserOrdersTotalPrice = async (
+  userId: number,
+): Promise<{ totalPrice: number }> => {
+  const result = await UserModel.calculateTotalPrice(userId);
+  return { totalPrice: result };
 };
 
 export const UserService = {
@@ -65,4 +73,5 @@ export const UserService = {
   deleteUserFromDB,
   addOrderIntoDB,
   getUserOrders,
+  getUserOrdersTotalPrice,
 };

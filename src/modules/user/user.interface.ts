@@ -35,4 +35,6 @@ export interface IUserModel extends Model<IUser> {
   isUserExist(userId: number): Promise<boolean>;
   // eslint-disable-next-line no-unused-vars
   addOrder(userId: number, Order: IOrder): Promise<void>;
+  // eslint-disable-next-line no-unused-vars
+  calculateTotalPrice(userId: number): Promise<number>;
 }

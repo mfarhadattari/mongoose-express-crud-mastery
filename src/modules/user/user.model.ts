@@ -134,4 +134,31 @@ userSchema.statics.addOrder = async function (userId, order) {
   }
 };
 
+// ----------------------->> Calculate Orders Price Static <-----------------
+userSchema.statics.calculateTotalPrice = async function (userId) {
+  const result = await UserModel.aggregate([
+    {
+      $match: { userId: userId },
+    },
+    {
+      $unwind: '$orders',
+    },
+    {
+      $group: {
+        _id: '$userId',
+        totalPrice: {
+          $sum: { $multiply: ['$orders.price', '$orders.quantity'] },
+        },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        totalPrice: 1,
+      },
+    },
+  ]);
+  return result[0]?.totalPrice || 0;
+};
+
 export const UserModel = model<IUser, IUserModel>('User', userSchema);
